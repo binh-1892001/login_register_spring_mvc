@@ -2,11 +2,10 @@ package com.ra.login_register.model;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -21,8 +20,13 @@ public class Users {
 	private String fullName;
 	private String username;
 	private String password;
-	private Date dateOfBirth;
-	private String address;
-	private String phone;
 	private Boolean status;
+	
+	@ManyToMany(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+	@JoinTable(
+			  name = "user_role",
+			  joinColumns = @JoinColumn(name = "user_id"),
+			  inverseJoinColumns = @JoinColumn(name = "role_id")
+	)
+	private Set<Roles> roles = new HashSet<>();
 }
